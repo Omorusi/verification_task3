@@ -22,7 +22,7 @@ public class Rate {
             throw new IllegalArgumentException("A rate cannot be negative");
         }
         if (normalRate.compareTo(reducedRate) < 0) {
-            throw new IllegalArgumentException("The normal rate can be bigger or equal to the reduced rate");
+            throw new IllegalArgumentException("The normal needs to be bigger or equal to the reduced rate");
         }
         if (!isValidPeriods(reducedPeriods) || !isValidPeriods(normalPeriods)) {
             throw new IllegalArgumentException("The periods are not valid individually");
@@ -101,9 +101,34 @@ public class Rate {
     public BigDecimal calculate(Period periodStay) {
         int normalRateHours = periodStay.occurences(normal);
         int reducedRateHours = periodStay.occurences(reduced);
+ 
+        BigDecimal normalCost = this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours));
+        BigDecimal reducedCost = this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours));
+        BigDecimal baseCost = normalCost.add(reducedCost);
+        
+
+        if(this.kind == CarParkKind.VISITOR)
+        {
+             if(baseCost.compareTo(BigDecimal.valueOf(10)) <= 0 ){
+                return BigDecimal.ZERO;
+             }
+             else{
+                BigDecimal payableCost = baseCost.subtract(BigDecimal.valueOf(10));
+                return payableCost.multiply(BigDecimal.valueOf(0.5))
+             }
+        }
+        else if (this.kind == CarParkKind.MANAGEMENT)
+        { 
+            return baseCost.compareTo(BigDecimal.valueOf(4)) < 0 ? BigDecimal.valueOf(4) : baseCost;
+        }
+        else if ( this.kind == CarParkKind.STAFF){
+            if(baseCost.compareTo(BigDecimal.valueOf))
+        }
         if (this.kind==CarParkKind.VISITOR) return BigDecimal.valueOf(0);
         return (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                 this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
     }
-
 }
+    
+    
+          
