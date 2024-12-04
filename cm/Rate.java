@@ -125,7 +125,7 @@ public class Rate {
             if(baseCost.compareTo(BigDecimal.valueOf))
         }
         if (this.kind==CarParkKind.VISITOR) return BigDecimal.valueOf(0);
-        return (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
+        return (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).
                 this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
     }
 }
