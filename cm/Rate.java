@@ -107,7 +107,7 @@ public class Rate {
         BigDecimal baseCost = normalCost.add(reducedCost);
         
 
-        if(this.kind == CarParkKind.VISITOR)
+        if(this.kind == CarParkKind.VISITOR) //  if CarParkKind id visitor
         {
              if(baseCost.compareTo(BigDecimal.valueOf(10)) <= 0 ){
                 return BigDecimal.ZERO;
@@ -117,16 +117,31 @@ public class Rate {
                 return payableCost.multiply(BigDecimal.valueOf(0.5))
              }
         }
-        else if (this.kind == CarParkKind.MANAGEMENT)
+        else if (this.kind == CarParkKind.MANAGEMENT) //  if CarParkKind id mamagement
         { 
             return baseCost.compareTo(BigDecimal.valueOf(4)) < 0 ? BigDecimal.valueOf(4) : baseCost;
         }
         else if ( this.kind == CarParkKind.STAFF){
             if(baseCost.compareTo(BigDecimal.valueOf))
         }
-        if (this.kind==CarParkKind.VISITOR) return BigDecimal.valueOf(0);
-        return (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).
-                this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
+          if (this.kind==CarParkKind.STAFF) //  if CarParkKind id staff
+          {
+            if (baseCost.compareTo(BigDecimal.valueOf(16)) > 0) {
+                return BigDecimal.valueOf(16);
+            } else {
+                return baseCost;
+            }
+         }
+         else if(this.kind == CarParkKind.STUDENT) //  if CarParkKind id student
+         {
+            if (baseCost.compareTo(BigDecimal.valueOf(5.50)) > 0) {
+                BigDecimal excess = baseCost.subtract(BigDecimal.valueOf(5.50));
+                BigDecimal reducedExcess = excess.multiply(BigDecimal.valueOf(0.75)); // 25% reduction
+                return BigDecimal.valueOf(5.50).add(reducedExcess);
+            } else {
+                return baseCost;
+            }
+         }
     }
 }
     
